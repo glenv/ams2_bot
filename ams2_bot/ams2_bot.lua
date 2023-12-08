@@ -75,6 +75,7 @@ function tick()
 		if now >= time then	
 			if debug then print( "ams2_bot: Kicking " .. refId )	end	
 			KickMember( refId )
+			SendChatToMember( member.refid,  "[AMS2_BOT] Please check running apps, background processes etc before joining again. Bye")
 			to_kick[ refId ] = nil
 		end
 	end
@@ -97,6 +98,7 @@ end
 function update_member_ping( member )
 	if config.BOT_HighPingKicker then
 		counter = counter + 1 
+		if debug then print( "ams2_bot: " .. member.refid .. " to autokick.." .. member.steamid) end 
 		if member.attributes.Ping > 0 and counter == seconds then
 			counter = 1
 			if member_ping_count[ member.refid ] == nil then
@@ -118,6 +120,7 @@ function update_member_ping( member )
 			if member_ping_warning[ member.refid ] >= warnings then
 				SendChatToMember( member.refid,  "[AMS2_BOT] You're being kicked for high ping, avg " .. math.floor(math.abs(member_ping_avg[ member.refid ])) ..'ms. Limit is ' ..  config.ping_limit_ms .. 'ms.')
 				SendChatToMember( member.refid,  "[AMS2_BOT] Please check running apps, background processes etc before joining again. Bye")
+				SendChatToAll( "[AMS2_BOT] " .. member.name .. " will be removed from server due to high ping.")
 				autokick( member.refid )
 				if debug then print( "ams2_bot: Adding " .. member.refid .. " to autokick..") end	
 			end
